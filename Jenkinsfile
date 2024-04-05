@@ -3,8 +3,8 @@ pipeline {
     environment {
         HOST_URL = "http://localhost:7000"
         SPRING_PROFILES_ACTIVE = "jenkins"
-        SONAR_PROJECT_KEY = credentials ('sonarqube-project-key')
-        SONAR_ACCESS_TOKEN = credentials('sonarqube-access-token')
+        SONAR_PROJECT_KEY = "Email-Client"
+        SONAR_ACCESS_TOKEN = "sqa_312939c578979e102927bd344429402a796010b4"
     }
     stages {
         stage("Checkout"){
@@ -25,7 +25,7 @@ pipeline {
         }
        stage("Deploy"){
         steps {
-            sh "mvn spring-boot:run"
+            sh "mvn compile package"
         }
        }
     }

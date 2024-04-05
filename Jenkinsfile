@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         HOST_URL = "http://localhost:7000"
+        SPRING_PROFILES_ACTIVE = "jenkins"
     }
     stages {
         stage("Checkout"){

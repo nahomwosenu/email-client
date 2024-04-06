@@ -3,7 +3,7 @@ pipeline {
     environment {
         HOST_URL = "http://localhost:7000"
         SPRING_PROFILES_ACTIVE = "jenkins"
-        SONAR_PROJECT_KEY = "Email-Client"
+        SONAR_PROJECT_KEY = "EmailClient-Local"
         SONAR_ACCESS_TOKEN = "sqa_312939c578979e102927bd344429402a796010b4"
     }
     stages {

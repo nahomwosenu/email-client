@@ -6,12 +6,13 @@ pipeline {
         SONAR_PROJECT_KEY = "EmailClient"
         SONAR_ACCESS_TOKEN = "sqp_9d39fc723db3f4b0256522883973391187b69fef"
         SONAR_PROJECT_NAME = "EmailClient"
+        SONAR_BRANCH_NAME = "alpha"
     }
     stages {
         stage("Checkout"){
             steps {
                 checkout scm
-                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.token=${env.SONAR_ACCESS_TOKEN}"
+                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.token=${env.SONAR_ACCESS_TOKEN} -Dsonar.branch.name=${SONAR_BRANCH_NAME}"
             }
         }
         stage("Build"){

@@ -1,17 +1,36 @@
 pipeline {
     agent any
-    environment {
-        SONAR_HOST_URL = "http://192.168.0.31:9000"
-        SPRING_PROFILES_ACTIVE = "jenkins"
-        SONAR_PROJECT_KEY = "EmailClient"
-        SONAR_ACCESS_TOKEN = "sqp_9d39fc723db3f4b0256522883973391187b69fef"
-        SONAR_PROJECT_NAME = "EmailClient"
-    }
     stages {
+        stage("read-env"){
+            steps {
+                script {
+                    env.local = loadEnvironmentalVariables('environments.json')
+                    echo "${env.local}"
+                }
+            }
+        }
         stage("Checkout"){
             steps {
                 checkout scm
-                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.token=${env.SONAR_ACCESS_TOKEN}"
+                // sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.token=${env.SONAR_ACCESS_TOKEN}"
+            }
+        }
+        stage("Sonar Analysis") {
+            steps {
+                echo "Env: ${env}"
+                sh "docker pull ${env.local.sonar_qube_config.image}"
+                sh """
+                                    docker run --rm \
+                                        -v \${WORKSPACE}:/opt/project \
+                                        ${env.local.sonar_qube_config.image} \
+                                        -Dsonar.host.url=${env.local.sonar_qube_config.target['development'].hostname} \
+                                        -Dsonar.login=${env.local.sonar_qube_config.target['development'].token} \
+                                        -Dsonar.projectKey=${env.local.sonar_qube_config.projectKey} \
+                                        -Dsonar.projectName=${env.local.sonar_qube_config.projectName} \
+                                        -Dsonar.sources=${env.local.sonar_qube_config.source} \
+                                        -Dsonar.verbose=true \
+                                        /opt/project
+                                """
             }
         }
         stage("Build"){

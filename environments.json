@@ -1,0 +1,18 @@
+{
+  "sonar_qube_config": {
+    "image": "sonarsource/sonar-scanner-cli:latest",
+    "projectName": "EmailClient",
+    "projectKey": "EmailClient",
+    "source": "src",
+    "target": {
+      "development": {
+        "hostname": "http://192.168.0.31:9000",
+        "token": "http://192.168.0.31:9000"
+      },
+      "production": {
+        "hostname": "nahompro.com",
+        "token": "<NA>"
+      }
+    }
+  }
+}

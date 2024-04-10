@@ -18,7 +18,7 @@ pipeline {
         }
         stage("Sonar Analysis") {
             steps {
-                echo "Env: ${env}"
+                echo "EnvLocal: ${env.local}"
                 sh "docker pull ${env.local.sonar_qube_config.image}"
                 sh """
                                     docker run --rm \

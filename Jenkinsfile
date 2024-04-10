@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     echo "Working Dir: ${WORKSPACE}"
-                    env.local = readFile 'environments.json'
+                    env.local = readJSON file:'environments.json'
                     echo "${env.local}"
                 }
             }

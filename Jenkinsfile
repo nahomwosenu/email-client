@@ -4,7 +4,8 @@ pipeline {
         stage("read-env"){
             steps {
                 script {
-                    env.local = loadEnvironmentalVariables('environments.json')
+                    echo "Working Dir: ${WORKSPACE}"
+                    env.local = readFile 'environments.json'
                     echo "${env.local}"
                 }
             }

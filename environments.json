@@ -7,7 +7,7 @@
     "target": {
       "development": {
         "hostname": "http://192.168.0.31:9000",
-        "token": "http://192.168.0.31:9000"
+        "token": "sqp_5d3c6522de79316b0b99c66ee086773edaf18af1"
       },
       "production": {
         "hostname": "nahompro.com",

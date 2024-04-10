@@ -24,21 +24,20 @@ pipeline {
             }
         }
         stage("Sonar Analysis") {
-            steps {
-                echo "Environment: ${env.target}"
-                sh "docker pull ${env.sonar_image}"
-                sh """
-                                    docker run --rm \
-                                        -v \${WORKSPACE}:/opt/project \
-                                        ${env.sonar_image} \
-                                        -Dsonar.host.url=${env.sonar_hostname} \
-                                        -Dsonar.login=${env.sonar_token} \
-                                        -Dsonar.projectKey=${env.sonar_projectKey} \
-                                        -Dsonar.projectName=${env.sonar_projectName} \
-                                        -Dsonar.sources=${env.sonar_source} \
-                                        -Dsonar.verbose=true \
-                                        /opt/project
-                                """
+            steps{
+                script {
+                    echo "Environment: ${env.target}"
+                    def scannerHome = tool 'sonarqube-scanner';
+                    withSonarQubeEnv('SonarQube-Local') {
+                        sh scannerHome + '/bin/sonar-scanner' +
+                               ' -Dsonar.projectName=' + env.sonar_projectName +
+                               ' -Dsonar.projectKey=' + env.sonar_projectKey +
+                               ' -Dsonar.host.url=' + env.sonar_hostname +
+                               ' -Dsonar.token=' + env.sonar_token +
+                               ' -Dsonar.sources=' + env.sonar_source +
+                               ' -Dsonar.verbose=true'
+                    }
+                }
             }
         }
         stage("Build"){
